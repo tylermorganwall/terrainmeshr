@@ -16,3 +16,4 @@ LinkingTo:
     Rcpp
 URL: https://www.github.com/tylermorganwall/terrainmeshr
 BugReports: https://www.github.com/tylermorganwall/terrainmeshr/issues
+SystemRequirements: C++11
