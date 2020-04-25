@@ -24,14 +24,14 @@ void Triangulator::Run(
   const int p2 = AddPoint(ivec2{x0, y1});
   const int p3 = AddPoint(ivec2{x1, y1});
   const int p0 = AddPoint(ivec2{x0, y0});
-  
+
   //Add all NA edge points
-  
+
   // add initial two triangles
   const int t0 = AddTriangle(p3, p0, p2, -1, -1, -1, -1);
   AddTriangle(p0, p3, p1, t0, -1, -1, -1);
   Flush();
-  
+
   // helper function to check if triangulation is complete
   const auto done = [this, maxError, maxTriangles, maxPoints]() {
     const float e = Error();
@@ -46,7 +46,7 @@ void Triangulator::Run(
     }
     return e == 0;
   };
-  
+
   while (!done()) {
     Step();
   }
@@ -96,35 +96,35 @@ void Triangulator::Flush() {
     // add triangle to priority queue
     QueuePush(t);
   }
-  
+
   m_Pending.clear();
 }
 
 void Triangulator::Step() {
   // pop triangle with highest error from priority queue
   const int t = QueuePop();
-  
+
   const int e0 = t * 3 + 0;
   const int e1 = t * 3 + 1;
   const int e2 = t * 3 + 2;
-  
+
   const int p0 = m_Triangles[e0];
   const int p1 = m_Triangles[e1];
   const int p2 = m_Triangles[e2];
-  
+
   const ivec2 a = m_Points[p0];
   const ivec2 b = m_Points[p1];
   const ivec2 c = m_Points[p2];
   const ivec2 p = m_Candidates[t];
-  
+
   const int pn = AddPoint(p);
-  
+
   const auto collinear = [](
     const ivec2 p0, const ivec2 p1, const ivec2 p2)
   {
     return (p1.y-p0.y)*(p2.x-p1.x) == (p2.y-p1.y)*(p1.x-p0.x);
   };
-  
+
   const auto handleCollinear = [this](const int pn, const int a) {
     const int a0 = a - a % 3;
     const int al = a0 + (a + 1) % 3;
@@ -134,9 +134,9 @@ void Triangulator::Step() {
     const int pl = m_Triangles[al];
     const int hal = m_Halfedges[al];
     const int har = m_Halfedges[ar];
-    
+
     const int b = m_Halfedges[a];
-    
+
     if (b < 0) {
       const int t0 = AddTriangle(pn, p0, pr, -1, har, -1, a0);
       const int t1 = AddTriangle(p0, pn, pl, t0, -1, hal, -1);
@@ -144,27 +144,27 @@ void Triangulator::Step() {
       Legalize(t1 + 2);
       return;
     }
-    
+
     const int b0 = b - b % 3;
     const int bl = b0 + (b + 2) % 3;
     const int br = b0 + (b + 1) % 3;
     const int p1 = m_Triangles[bl];
     const int hbl = m_Halfedges[bl];
     const int hbr = m_Halfedges[br];
-    
+
     QueueRemove(b / 3);
-    
+
     const int t0 = AddTriangle(p0, pr, pn, har, -1, -1, a0);
     const int t1 = AddTriangle(pr, p1, pn, hbr, -1, t0 + 1, b0);
     const int t2 = AddTriangle(p1, pl, pn, hbl, -1, t1 + 1, -1);
     const int t3 = AddTriangle(pl, p0, pn, hal, t0 + 2, t2 + 1, -1);
-    
+
     Legalize(t0);
     Legalize(t1);
     Legalize(t2);
     Legalize(t3);
   };
-  
+
   if (collinear(a, b, p)) {
     handleCollinear(pn, e0);
   } else if (collinear(b, c, p)) {
@@ -175,16 +175,16 @@ void Triangulator::Step() {
     const int h0 = m_Halfedges[e0];
     const int h1 = m_Halfedges[e1];
     const int h2 = m_Halfedges[e2];
-    
+
     const int t0 = AddTriangle(p0, p1, pn, h0, -1, -1, e0);
     const int t1 = AddTriangle(p1, p2, pn, h1, -1, t0 + 1, -1);
     const int t2 = AddTriangle(p2, p0, pn, h2, t0 + 2, t1 + 1, -1);
-    
+
     Legalize(t0);
     Legalize(t1);
     Legalize(t2);
   }
-  
+
   Flush();
 }
 
@@ -225,7 +225,7 @@ int Triangulator::AddTriangle(
     m_Halfedges[e + 1] = bc;
     m_Halfedges[e + 2] = ca;
   }
-  
+
   // link neighboring halfedges
   if (ab >= 0) {
     m_Halfedges[ab] = e + 0;
@@ -236,11 +236,11 @@ int Triangulator::AddTriangle(
   if (ca >= 0) {
     m_Halfedges[ca] = e + 2;
   }
-  
+
   // add triangle to pending queue for later rasterization
   const int t = e / 3;
   m_Pending.push_back(t);
-  
+
   // return first halfedge index
   return e;
 }
@@ -251,16 +251,16 @@ void Triangulator::Legalize(const int a) {
   // then do the same check/flip recursively for the new pair of triangles
   //
   //           pl                    pl
-  //          /||\                  /  \
-  //       al/ || \bl            al/    \a
-  //        /  ||  \              /       \
-  //       /  a||b  \    flip    /___ar___\
-  //     p0\   ||   /p1   =>   p0\---bl---/p1
-  //        \  ||  /              \      /
-  //       ar\ || /br             b\    /br
-  //          \||/                  \  /
+  //          ||||                  |  |
+  //       al| || |bl            al|    |a
+  //        |  ||  |              |      |
+  //       |  a||b  |    flip    |___ar___|
+  //     p0|   ||   |p1   =>   p0|---bl---|p1
+  //        |  ||  |              |      |
+  //       ar| || |br             b|    |br
+  //          ||||                  |  |
   //           pr                    pr
-  
+
   const auto inCircle = [](
     const ivec2 a, const ivec2 b, const ivec2 c,
     const ivec2 p)
@@ -276,13 +276,13 @@ void Triangulator::Legalize(const int a) {
     const int64_t cp = fx * fx + fy * fy;
     return dx*(ey*cp-bp*fy)-dy*(ex*cp-bp*fx)+ap*(ex*fy-ey*fx) < 0;
   };
-  
+
   const int b = m_Halfedges[a];
-  
+
   if (b < 0) {
     return;
   }
-  
+
   const int a0 = a - a % 3;
   const int b0 = b - b % 3;
   const int al = a0 + (a + 1) % 3;
@@ -293,22 +293,22 @@ void Triangulator::Legalize(const int a) {
   const int pr = m_Triangles[a];
   const int pl = m_Triangles[al];
   const int p1 = m_Triangles[bl];
-  
+
   if (!inCircle(m_Points[p0], m_Points[pr], m_Points[pl], m_Points[p1])) {
     return;
   }
-  
+
   const int hal = m_Halfedges[al];
   const int har = m_Halfedges[ar];
   const int hbl = m_Halfedges[bl];
   const int hbr = m_Halfedges[br];
-  
+
   QueueRemove(a / 3);
   QueueRemove(b / 3);
-  
+
   const int t0 = AddTriangle(p0, p1, pl, -1, hbl, hal, a0);
   const int t1 = AddTriangle(p1, p0, pr, t0, har, hbr, b0);
-  
+
   Legalize(t0 + 1);
   Legalize(t1 + 2);
 }

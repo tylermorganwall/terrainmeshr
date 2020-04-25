@@ -2,7 +2,7 @@
 
 inline List vec3_to_rcpp(const std::vector<vec3> input) {
   std::vector<double> x, y, z;
-  for(int i = 0; i < input.size(); i++) {
+  for(size_t i = 0; i < input.size(); i++) {
     x.push_back((double)input[i].x);
     y.push_back((double)input[i].y);
     z.push_back((double)input[i].z);
@@ -18,7 +18,7 @@ inline List vec3_to_rcpp(const std::vector<vec3> input) {
 
 inline List ivec3_to_rcpp(const std::vector<ivec3> input) {
   std::vector<int> x, y, z;
-  for(int i = 0; i < input.size(); i++) {
+  for(size_t i = 0; i < input.size(); i++) {
     x.push_back(input[i].x);
     y.push_back(input[i].y);
     z.push_back(input[i].z);
