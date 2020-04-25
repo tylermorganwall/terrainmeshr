@@ -14,7 +14,7 @@
 #'Otherwise, specifies the maximum number of triangles when triangulating the height map.
 #'@param y_up Default `TRUE`. Which axis is "upwards" in the return matrix. If `FALSE`, `z` is up.
 #'@param start_index Default `1`. The offset to the first `x` and `z` indices.
-#'@param verbose Default `FALSE`. Prints reduction in number of triangles.
+#'@param verbose Default `FALSE`. Prints reduction in number of triangles/max error.
 #'@return Returns a matrix of vertices and IDs for each triangle.
 #'@export
 #'@examples

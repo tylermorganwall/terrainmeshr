@@ -26,7 +26,7 @@ Otherwise, specifies the maximum number of triangles when triangulating the heig
 
 \item{start_index}{Default `1`. The offset to the first `x` and `z` indices.}
 
-\item{verbose}{Default `FALSE`. Prints reduction in number of triangles.}
+\item{verbose}{Default `FALSE`. Prints reduction in number of triangles/max error.}
 }
 \value{
 Returns a matrix of vertices and IDs for each triangle.
