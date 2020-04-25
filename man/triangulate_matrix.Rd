@@ -19,9 +19,10 @@ All points are assumed to be evenly spaced.}
 
 \item{maxError}{Default `0.0001`. Maximum error allowed in triangulating the height map.}
 
-\item{maxTriangles}{Default `0`, which turns off this setting (and only uses the `max_error` arg)}
+\item{maxTriangles}{Default `0`, which turns off this setting (and only uses the `max_error` arg).
+Otherwise, specifies the maximum number of triangles when triangulating the height map.}
 
-\item{y_up}{Default `TRUE`. Which direction is "upwards". If `FALSE`, `z` is up.}
+\item{y_up}{Default `TRUE`. Which axis is "upwards" in the return matrix. If `FALSE`, `z` is up.}
 
 \item{start_index}{Default `1`. The offset to the first `x` and `z` indices.}
 
