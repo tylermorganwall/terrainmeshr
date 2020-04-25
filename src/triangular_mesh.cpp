@@ -37,15 +37,14 @@ List triangulate_matrix_rcpp(NumericMatrix heightmap, float maxError, int maxTri
   std::vector<float> data = as<std::vector<float> >(heightmap) ;
   std::vector<int> ind_x;
   std::vector<int> ind_y;
-  // std::vector<int> ind_x = as<std::vector<int> >(edge_indices.col(0)) ;
-  // std::vector<int> ind_y = as<std::vector<int> >(edge_indices.col(1)) ;
 
   Heightmap hm = Heightmap(heightmap.nrow(), heightmap.ncol(), data);
   Triangulator tri(hm);
   tri.Run(maxError, maxTriangles, maxTriangles, ind_x, ind_y);
   auto points = tri.Points();
   auto triangles = tri.Triangles();
+  auto error = tri.Error();
   List verts = vec3_to_rcpp(points);
   List indices = ivec3_to_rcpp(triangles);
-  return(List::create(_["vertices"] = verts, _["indices"] = indices));
+  return(List::create(_["vertices"] = verts, _["indices"] = indices, _["error"] = error));
 }

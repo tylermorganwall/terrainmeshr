@@ -2,6 +2,6 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 triangulate_matrix_rcpp <- function(heightmap, maxError, maxTriangles) {
-    .Call(`_hmmr_triangulate_matrix_rcpp`, heightmap, maxError, maxTriangles)
+    .Call(`_terrainmeshr_triangulate_matrix_rcpp`, heightmap, maxError, maxTriangles)
 }
 

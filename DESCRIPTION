@@ -1,16 +1,18 @@
-Package: hmmr
+Package: terrainmeshr
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Triangulate and Simplify 3D Terrain Meshes
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Authors@R: c(person("Tyler", "Morgan-Wall", email = "tylermw@gmail.com",
+    role = c("aut", "cph", "cre"), comment = c(ORCID = "0000-0002-3131-3814")),
+    person("Michael", "Fogleman", role=c("ctb", "cph")))
+Description: Provides triangulations of regular height fields, based on the methods described in "Fast Polygonal Approximation of Terrains and Height Fields" Michael Garland and Paul S. Heckbert (1995) <https://mgarland.org/files/papers/scape.pdf> using code from the 'hmm' library written by Michael Fogleman <https://https://github.com/fogleman/hmm>.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.0.2
+Imports:
+    Rcpp (>= 1.0.0)
 LinkingTo: 
     Rcpp
-Imports: 
-    Rcpp
+URL: https://www.github.com/tylermorganwall/terrainmesher
+BugReports: https://github.com/tylermorganwall/terrainmesher/issues

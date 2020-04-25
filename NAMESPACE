@@ -3,4 +3,4 @@
 export(triangulate_matrix)
 importFrom(Rcpp,evalCpp)
 importFrom(Rcpp,sourceCpp)
-useDynLib(hmmr, .registration = TRUE)
+useDynLib(terrainmeshr, .registration = TRUE)

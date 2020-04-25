@@ -1,35 +1,68 @@
-#'@title Make Reduced Matrix Size
+#'@title Triangulate a Height Map
 #'
-#'@description Uses Delaney triangulation to reduce the size of the matrix
+#'@description Uses Delaney triangulation to reduce the size of the matrix.
 #'
 #'@param heightmap A two-dimensional matrix, where each entry in the matrix is the elevation at that point.
 #'All points are assumed to be evenly spaced.
-#'@param maxError Default `0`.
-#'@param maxTriangles Default `0`, which turns off this setting.
-#'@keywords internal
-triangulate_matrix_na = function(heightmap, maxError=0, maxTriangles = 0) {
-  testmat = matrix(0, ncol=ncol(heightmap), nrow=nrow(heightmap))
-  edge_indices = do.call(rbind, get_edge_indices(heightmap, is.na(heightmap)))
-  unique_edge_indices = unique(edge_indices)
-  unique_edge_indices = unique_edge_indices[order(unique_edge_indices[,1],unique_edge_indices[,2]),]
-  create_edge_indices = function(min_edge, max_edge) {
-    edge1 = seq(min_edge[1], max_edge[1])
-    mat_top = matrix(c(edge1, rep(min_edge[2],length(edge1))), ncol=2)
-    mat_bot = matrix(c(edge1, rep(max_edge[2],length(edge1))), ncol=2)
-    if(min_edge[2]+1 <=  max_edge[2]-1) {
-      edge2 = seq(min_edge[2]+1, max_edge[2]-1)
-      mat_left  = matrix(c(rep(min_edge[1], length(edge2)), edge2), ncol=2)
-      mat_right = matrix(c(rep(max_edge[1], length(edge2)), edge2), ncol=2)
-      return(rbind(mat_top, mat_bot, mat_left, mat_right))
-    } else {
-      return(rbind(mat_top, mat_bot))
-    }
+#'@param maxError Default `0.0001`. Maximum error allowed in triangulating the height map.
+#'@param maxTriangles Default `0`, which turns off this setting (and only uses the `max_error` arg)
+#'@param y_up Default `TRUE`. Which direction is "upwards". If `FALSE`, `z` is up.
+#'@param start_index Default `1`. The offset to the first `x` and `z` indices.
+#'@param verbose Default `FALSE`. Prints reduction in number of triangles.
+#'@return Returns a matrix of vertices and IDs for each triangle.
+#'@export
+#'@examples
+#' #Let's triangulate the built-in `volcano` dataset.
+#'
+#' #Helper function to plot polygons over an `image()` plot.
+#' plot_polys = function(tri_matrix) {
+#'   #reverse orienation for `image`
+#'   tri_matrix[,3] = max(tri_matrix[,3])-tri_matrix[,3]+1
+#'   for(i in seq_len(nrow(tri_matrix)/3)) {
+#'     polypath(tri_matrix[(3*(i-1)+1):(3*i), c(1,3)])
+#'   }
+#' }
+#'
+#' #Here, we don't accept any error, but still triangulate
+#' tris = triangulate_matrix(volcano, maxError = 0, verbose = TRUE)
+#' image(x=1:nrow(volcano), y = 1:ncol(volcano), volcano)
+#' plot_polys(tris)
+#'
+#' #Let's increase the allowable error:
+#' tris = triangulate_matrix(volcano, maxError = 1, verbose = TRUE)
+#' image(x=1:nrow(volcano), y = 1:ncol(volcano), volcano)
+#' plot_polys(tris)
+#'
+#' #Increase it again
+#' tris = triangulate_matrix(volcano, maxError = 10, verbose = TRUE)
+#' image(x=1:nrow(volcano), y = 1:ncol(volcano), volcano)
+#' plot_polys(tris)
+#'
+#' #Here, we set an allowable number of triangles instead, using exactly 20 triangles:
+#' tris = triangulate_matrix(volcano, maxTriangles = 20, verbose = TRUE)
+#' image(x=1:nrow(volcano), y = 1:ncol(volcano), volcano)
+#' plot_polys(tris)
+triangulate_matrix = function(heightmap, maxError=0.0001, maxTriangles = 0, y_up = TRUE,
+                              start_index = 1, verbose = FALSE) {
+  tri_info = triangulate_matrix_rcpp(heightmap, maxError, maxTriangles)
+  ind = do.call(cbind,tri_info$indices) + 1
+  verts = do.call(cbind,tri_info$vertices)
+  error = tri_info$error
+  full_vertices = verts[as.vector(t(ind)),]
+  full_vertices[,1] = full_vertices[,1] + start_index
+  full_vertices[,2] = full_vertices[,2] + start_index
+  ids = seq_len(nrow(full_vertices)/3)
+  id_vec = unlist(lapply(ids,rep,3))
+  if(y_up) {
+    full_vertices = full_vertices[,c(1,3,2)]
   }
-  polymin = list()
-  polymax = list()
-  counter = 1
-  returnval = list()
-  returnval$min = do.call(rbind,polymin)
-  returnval$max = do.call(rbind,polymax)
-  return(returnval)
+  full_vertices = cbind(full_vertices,id_vec)
+  if(verbose) {
+    base_triangles =ncol(heightmap) * nrow(heightmap) * 2
+    message(sprintf("%0.1f%% reduction: Number of triangles reduced from %d to %d. Error: %f",
+                    (1-(nrow(full_vertices)/3)/base_triangles)*100,
+                    base_triangles, nrow(full_vertices)/3, error))
+  }
+  colnames(full_vertices) = c("x","y","z","id")
+  return(full_vertices)
 }

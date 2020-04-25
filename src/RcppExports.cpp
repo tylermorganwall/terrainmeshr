@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // triangulate_matrix_rcpp
 List triangulate_matrix_rcpp(NumericMatrix heightmap, float maxError, int maxTriangles);
-RcppExport SEXP _hmmr_triangulate_matrix_rcpp(SEXP heightmapSEXP, SEXP maxErrorSEXP, SEXP maxTrianglesSEXP) {
+RcppExport SEXP _terrainmeshr_triangulate_matrix_rcpp(SEXP heightmapSEXP, SEXP maxErrorSEXP, SEXP maxTrianglesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -20,11 +20,11 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_hmmr_triangulate_matrix_rcpp", (DL_FUNC) &_hmmr_triangulate_matrix_rcpp, 3},
+    {"_terrainmeshr_triangulate_matrix_rcpp", (DL_FUNC) &_terrainmeshr_triangulate_matrix_rcpp, 3},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_hmmr(DllInfo *dll) {
+RcppExport void R_init_terrainmeshr(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }
