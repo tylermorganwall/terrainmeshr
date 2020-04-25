@@ -1,6 +1,11 @@
 #'@title Triangulate a Height Map
 #'
-#'@description Uses Delaney triangulation to reduce the size of the matrix.
+#'@description Uses Delaney triangulation to approximate a rectangular height field (in
+#'matrix form) with constraints (either maximum allowable error, or a maximum number of triangles).
+#'Increasing the error limit will result in a courser approximation, but fewer triangles in the model.
+#'For many models (particularly those with large, flat regions or smooth changes in height),
+#'this can result in significant reductions in model size with no perceptual loss in
+#'terrain surface quality.
 #'
 #'@param heightmap A two-dimensional matrix, where each entry in the matrix is the elevation at that point.
 #'All points are assumed to be evenly spaced.
@@ -43,6 +48,8 @@
 #' tris = triangulate_matrix(volcano, maxTriangles = 20, verbose = TRUE)
 #' image(x=1:nrow(volcano), y = 1:ncol(volcano), volcano)
 #' plot_polys(tris)
+#'
+#' #The output of this function can be passed directly to `rgl::triangles3d()` for plotting in 3D.
 triangulate_matrix = function(heightmap, maxError=0.0001, maxTriangles = 0, y_up = TRUE,
                               start_index = 1, verbose = FALSE) {
   tri_info = triangulate_matrix_rcpp(heightmap, maxError, maxTriangles)

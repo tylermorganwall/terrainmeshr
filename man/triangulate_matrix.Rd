@@ -32,7 +32,12 @@ Otherwise, specifies the maximum number of triangles when triangulating the heig
 Returns a matrix of vertices and IDs for each triangle.
 }
 \description{
-Uses Delaney triangulation to reduce the size of the matrix.
+Uses Delaney triangulation to approximate a rectangular height field (in
+matrix form) with constraints (either maximum allowable error, or a maximum number of triangles).
+Increasing the error limit will result in a courser approximation, but fewer triangles in the model.
+For many models (particularly those with large, flat regions or smooth changes in height),
+this can result in significant reductions in model size with no perceptual loss in
+terrain surface quality.
 }
 \examples{
 #Let's triangulate the built-in `volcano` dataset.
@@ -65,4 +70,6 @@ plot_polys(tris)
 tris = triangulate_matrix(volcano, maxTriangles = 20, verbose = TRUE)
 image(x=1:nrow(volcano), y = 1:ncol(volcano), volcano)
 plot_polys(tris)
+
+#The output of this function can be passed directly to `rgl::triangles3d()` for plotting in 3D.
 }
