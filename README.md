@@ -122,7 +122,7 @@ plot_polys(tris2)
 By setting the allowable maximum error to 2, we have reduced the size of
 the model to over 1/10th it’s original size. We also computed a
 minimum-error model with a set number of triangles. Let’s inspect the
-first model in 3D and compare it (green) to the full triangulated
+max error model in 3D and compare it (green) to the full triangulated
 version (red). We’ll load the rayshader and rgl packages to help with
 plotting the models in 3D.
 
