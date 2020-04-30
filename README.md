@@ -96,7 +96,7 @@ plot_polys(tris)
 
 Here, triangulating the matrix resulted in a 35% reduction in the number
 of triangles required, with no additional error. Let’s try setting a
-maximum number of triangles to use, or set the maximum allwoable error
+maximum number of triangles to use, or set the maximum allowable error
 value to a small finite number:
 
 ``` r
@@ -208,4 +208,4 @@ render_snapshot()
 ![](man/figures/README-rayshader-1.png)<!-- -->
 
 We see that there is only a small perceivable difference between the two
-models, despite one of them being 1/10th the size.
+models, despite one of them being 1/10th the size of the other.

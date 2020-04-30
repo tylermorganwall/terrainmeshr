@@ -89,7 +89,7 @@ plot_polys(tris)
 
 ```
 
-Here, triangulating the matrix resulted in a 35% reduction in the number of triangles required, with no additional error. Let's try setting a maximum number of triangles to use, or set the maximum allwoable error value to a small finite number:
+Here, triangulating the matrix resulted in a 35% reduction in the number of triangles required, with no additional error. Let's try setting a maximum number of triangles to use, or set the maximum allowable error value to a small finite number:
 
 ```{r example2}
 
@@ -174,7 +174,7 @@ render_snapshot()
 
 ```
 
-We see that there is only a small perceivable difference between the two models, despite one of them being 1/10th the size.
+We see that there is only a small perceivable difference between the two models, despite one of them being 1/10th the size of the other.
 
 ```{r final, include = FALSE}
 
