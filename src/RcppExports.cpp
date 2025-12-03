@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // triangulate_matrix_rcpp
 List triangulate_matrix_rcpp(NumericMatrix heightmap, float maxError, int maxTriangles);
 RcppExport SEXP _terrainmeshr_triangulate_matrix_rcpp(SEXP heightmapSEXP, SEXP maxErrorSEXP, SEXP maxTrianglesSEXP) {

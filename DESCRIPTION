@@ -1,7 +1,7 @@
 Package: terrainmeshr
 Type: Package
 Title: Triangulate and Simplify 3D Terrain Meshes
-Version: 0.1.0
+Version: 1.0.0
 Authors@R: c(person("Tyler", "Morgan-Wall", email = "tylermw@gmail.com",
     role = c("aut", "cph", "cre"), comment = c(ORCID = "0000-0002-3131-3814")),
     person("Michael", "Fogleman", role=c("ctb", "cph")))
@@ -9,11 +9,10 @@ Description: Provides triangulations of regular height fields, based on the meth
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.2
+RoxygenNote: 7.3.3
 Imports:
     Rcpp (>= 1.0.0)
 LinkingTo: 
     Rcpp
-URL: https://www.github.com/tylermorganwall/terrainmeshr
-BugReports: https://www.github.com/tylermorganwall/terrainmeshr/issues
-SystemRequirements: C++11
+URL: https://github.com/tylermorganwall/terrainmeshr
+BugReports: https://github.com/tylermorganwall/terrainmeshr/issues
