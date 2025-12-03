@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 [![CRAN status](https://www.r-pkg.org/badges/version/terrainmeshr)](https://CRAN.R-project.org/package=terrainmeshr)
 <!-- badges: end -->
 
-*terrainmesher* is an R package to simplify dense height fields/terrain maps by constrained Delunay Triangulation, using methods the methods described by [Fast Polygonal Approximation of Terrains and Height Fields (PDF)](https://www.mgarland.org/files/papers/scape.pdf) Michael Garland and Paul S. Heckbert (1995) and based on code from the [hmm library](https://www.github.com/fogleman/hmm) written by [Michael Fogleman](https://www.michaelfogleman.com/projects/hmm/).
+*terrainmesher* is an R package to simplify dense height fields/terrain maps by constrained Delunay Triangulation, using methods the methods described by [Fast Polygonal Approximation of Terrains and Height Fields (PDF)](https://www.mgarland.org/files/papers/scape.pdf) Michael Garland and Paul S. Heckbert (1995) and based on code from the [hmm library](https://github.com/fogleman/hmm) written by [Michael Fogleman](https://www.michaelfogleman.com/projects/hmm/).
 
 ## Installation
 

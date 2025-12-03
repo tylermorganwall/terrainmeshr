@@ -14,7 +14,7 @@ maps by constrained Delunay Triangulation, using methods the methods
 described by [Fast Polygonal Approximation of Terrains and Height Fields
 (PDF)](https://www.mgarland.org/files/papers/scape.pdf) Michael Garland
 and Paul S. Heckbert (1995) and based on code from the [hmm
-library](https://www.github.com/fogleman/hmm) written by [Michael
+library](https://github.com/fogleman/hmm) written by [Michael
 Fogleman](https://www.michaelfogleman.com/projects/hmm/).
 
 ## Installation
@@ -87,7 +87,7 @@ First, let’s try triangulating the matrix without any loss of precision
 library(terrainmeshr)
 
 tris = triangulate_matrix(volcano, maxError = 0, verbose = TRUE)
-#> 35.0% reduction: Number of triangles reduced from 10614 to 6904. Error: 0.000000
+#> 35.3% reduction: Number of triangles reduced from 10614 to 6867. Error: 0.000000
 image(x=1:nrow(volcano), y = 1:ncol(volcano), volcano)
 plot_polys(tris)
 ```
@@ -135,26 +135,50 @@ tri_volcano[,3] = -tri_volcano[,3]
 
 par3d(windowRect=c(0,0,600,600))
 rgl::rgl.triangles(tris2, color="green", lit=TRUE)
+#> Warning in rgl::rgl.triangles(tris2, color = "green", lit = TRUE): 'rgl::rgl.triangles' is deprecated.
+#> Use 'triangles3d' instead.
+#> See help("Deprecated")
 rgl::rgl.triangles(tri_volcano, color="red", lit=TRUE)
+#> Warning in rgl::rgl.triangles(tri_volcano, color = "red", lit = TRUE): 'rgl::rgl.triangles' is deprecated.
+#> Use 'triangles3d' instead.
+#> See help("Deprecated")
 bg3d(color="black")
 
 par(mfrow=c(2,2))
 render_camera(phi=30,fov=0,theta=45,zoom=0.9)
-render_snapshot()
-render_camera(phi=30,fov=0,theta=135,zoom=0.9)
-render_snapshot()
-render_camera(phi=30,fov=0,theta=225,zoom=0.9)
-render_snapshot()
-render_camera(phi=30,fov=0,theta=315,zoom=0.9)
 render_snapshot()
 ```
 
 ![](man/figures/README-rgl-1.png)<!-- -->
 
 ``` r
+render_camera(phi=30,fov=0,theta=135,zoom=0.9)
+render_snapshot()
+```
+
+![](man/figures/README-rgl-2.png)<!-- -->
+
+``` r
+render_camera(phi=30,fov=0,theta=225,zoom=0.9)
+render_snapshot()
+```
+
+![](man/figures/README-rgl-3.png)<!-- -->
+
+``` r
+render_camera(phi=30,fov=0,theta=315,zoom=0.9)
+render_snapshot()
+```
+
+![](man/figures/README-rgl-4.png)<!-- -->
+
+``` r
 par(mfrow=c(1,1))
 
 rgl.close()
+#> Warning in rgl.close(): 'rgl.close' is deprecated.
+#> Use 'close3d' instead.
+#> See help("Deprecated")
 ```
 
 With minimal loss of detail, we have computed a 3D model that is a good
@@ -191,21 +215,42 @@ texcoords2[,2] = 1-texcoords2[,2]/max(texcoords2[,2])
 par3d(windowRect=c(0,0,600,600))
 
 rgl::rgl.triangles(tris2, lit=FALSE, texture = temp_texture, texcoords = texcoords)
+#> Warning in rgl::rgl.triangles(tris2, lit = FALSE, texture = temp_texture, : 'rgl::rgl.triangles' is deprecated.
+#> Use 'triangles3d' instead.
+#> See help("Deprecated")
 rgl::rgl.triangles(tri_volcano,  lit=FALSE, texture = temp_texture, texcoords = texcoords2)
+#> Warning in rgl::rgl.triangles(tri_volcano, lit = FALSE, texture = temp_texture, : 'rgl::rgl.triangles' is deprecated.
+#> Use 'triangles3d' instead.
+#> See help("Deprecated")
 bg3d(color="black")
 
 par(mfrow=c(2,2))
 render_camera(phi=30,fov=0,theta=45,zoom=0.9)
 render_snapshot()
+```
+
+![](man/figures/README-rayshader-1.png)<!-- -->
+
+``` r
 render_camera(phi=30,fov=0,theta=135,zoom=0.9)
 render_snapshot()
+```
+
+![](man/figures/README-rayshader-2.png)<!-- -->
+
+``` r
 render_camera(phi=30,fov=0,theta=225,zoom=0.9)
 render_snapshot()
+```
+
+![](man/figures/README-rayshader-3.png)<!-- -->
+
+``` r
 render_camera(phi=30,fov=0,theta=315,zoom=0.9)
 render_snapshot()
 ```
 
-![](man/figures/README-rayshader-1.png)<!-- -->
+![](man/figures/README-rayshader-4.png)<!-- -->
 
 We see that there is only a small perceivable difference between the two
 models, despite one of them being 1/10th the size of the other.
