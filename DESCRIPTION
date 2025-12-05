@@ -1,7 +1,7 @@
 Package: terrainmeshr
 Type: Package
 Title: Triangulate and Simplify 3D Terrain Meshes
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(person("Tyler", "Morgan-Wall", email = "tylermw@gmail.com",
     role = c("aut", "cph", "cre"), comment = c(ORCID = "0000-0002-3131-3814")),
     person("Michael", "Fogleman", role=c("ctb", "cph")))
@@ -10,9 +10,5 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.3
-Imports:
-    Rcpp (>= 1.0.0)
-LinkingTo: 
-    Rcpp
 URL: https://github.com/tylermorganwall/terrainmeshr
 BugReports: https://github.com/tylermorganwall/terrainmeshr/issues

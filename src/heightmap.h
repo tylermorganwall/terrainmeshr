@@ -1,6 +1,3 @@
-#include <Rcpp.h>
-using namespace Rcpp;
-
 #include <string>
 #include <utility>
 #include <vector>

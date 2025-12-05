@@ -12,8 +12,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "man/figures/README-",
   fig.width=8,
-  fig.height=8,
-  cache=TRUE
+  fig.height=8
 )
 ```
 
@@ -21,6 +20,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/terrainmeshr)](https://CRAN.R-project.org/package=terrainmeshr)
+[![R-CMD-check](https://github.com/tylermorganwall/terrainmeshr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/tylermorganwall/terrainmeshr/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 *terrainmesher* is an R package to simplify dense height fields/terrain maps by constrained Delunay Triangulation, using methods the methods described by [Fast Polygonal Approximation of Terrains and Height Fields (PDF)](https://www.mgarland.org/files/papers/scape.pdf) Michael Garland and Paul S. Heckbert (1995) and based on code from the [hmm library](https://github.com/fogleman/hmm) written by [Michael Fogleman](https://www.michaelfogleman.com/projects/hmm/).
@@ -49,8 +49,8 @@ The built-in `volcano` dataset in R is a 87x61 matrix of elevation values. To pe
 #Generate full triangulation of `volcano`
 tri_volcano = matrix(0, nrow = 86*60*3*2, ncol = 3)
 counter = 1
-for(i in 1:(nrow(volcano) - 1)) {
-  for(j in 1:(ncol(volcano) - 1)) {
+for(i in seq_len(nrow(volcano) - 1)) {
+  for(j in seq_len(ncol(volcano) - 1)) {
     tri_volcano[6*(counter-1)+1, ] = c(i, volcano[i,j], j)
     tri_volcano[6*(counter-1)+2, ] = c(i, volcano[i,j+1], j+1)
     tri_volcano[6*(counter-1)+3, ] = c(i+1, volcano[i+1,j], j)
@@ -69,7 +69,7 @@ plot_polys = function(tri_matrix) {
   }
 }
 
-image(x=1:nrow(volcano), y = 1:ncol(volcano), volcano)
+image(x=seq_len(nrow(volcano)), y = seq_len(ncol(volcano)), volcano)
 plot_polys(tri_volcano)
 
 ```
@@ -83,7 +83,7 @@ First, let's try triangulating the matrix without any loss of precision (by sett
 library(terrainmeshr)
 
 tris = triangulate_matrix(volcano, maxError = 0, verbose = TRUE)
-image(x=1:nrow(volcano), y = 1:ncol(volcano), volcano)
+image(x=seq_len(nrow(volcano)), y = seq_len(ncol(volcano)), volcano)
 plot_polys(tris)
 
 
@@ -94,11 +94,11 @@ Here, triangulating the matrix resulted in a 35% reduction in the number of tria
 ```{r example2}
 
 tris1 = triangulate_matrix(volcano, maxTriangles = 200, verbose = TRUE)
-image(x=1:nrow(volcano), y = 1:ncol(volcano), volcano)
+image(x=seq_len(nrow(volcano)), y = seq_len(ncol(volcano)), volcano)
 plot_polys(tris1)
 
 tris2 = triangulate_matrix(volcano, maxError = 2, verbose = TRUE)
-image(x=1:nrow(volcano), y = 1:ncol(volcano), volcano)
+image(x=seq_len(nrow(volcano)), y = seq_len(ncol(volcano)), volcano)
 plot_polys(tris2)
 
 ```

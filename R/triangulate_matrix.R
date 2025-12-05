@@ -58,7 +58,7 @@ triangulate_matrix = function(
   start_index = 1,
   verbose = FALSE
 ) {
-  tri_info = triangulate_matrix_rcpp(heightmap, maxError, maxTriangles)
+  tri_info = .Call("C_triangulate_matrix", heightmap, maxError, maxTriangles)
   ind = do.call(cbind, tri_info$indices) + 1
   verts = do.call(cbind, tri_info$vertices)
   error = tri_info$error

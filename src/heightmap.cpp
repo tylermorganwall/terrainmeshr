@@ -1,5 +1,6 @@
 #include "heightmap.h"
 #include <algorithm>
+#include <cmath>
 
 inline ivec2 min2(ivec2 a, ivec2 b, ivec2 c) {
   return(ivec2{std::min(std::min(a.x, b.x), c.x), std::min(std::min(a.y, b.y), c.y)});
